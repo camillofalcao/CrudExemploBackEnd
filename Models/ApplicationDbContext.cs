@@ -7,6 +7,7 @@ namespace AtletaApi.Models
     public class ApplicationDbContext : IdentityDbContext
     {
         public DbSet<Atleta> Atletas { get; set; } = null!;
+        public DbSet<AtletaRecord> AtletasRecords { get; set; } = null!;
 
         protected override void OnConfiguring(DbContextOptionsBuilder options)
         {

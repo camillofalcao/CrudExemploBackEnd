@@ -18,7 +18,7 @@ public class AtletaController : ControllerBase
     public ActionResult<IEnumerable<Atleta>> Get()
     {
         if (db.Atletas == null)
-            return NotFound();
+            return NotFound("Nenhum atleta cadastrado.");
 
         return db.Atletas;
     }
@@ -30,7 +30,7 @@ public class AtletaController : ControllerBase
         var obj = db.Atletas.FirstOrDefault(x => x.Id == id);
 
         if (obj == null)
-            return NotFound();
+            return NotFound("Não foi encontrado nenhum atleta com o identificador informado.");
 
         return obj;
     }
@@ -57,7 +57,7 @@ public class AtletaController : ControllerBase
     public IActionResult Put(string id, Atleta obj)
     {
         if (id != obj.Id)
-            return BadRequest();
+            return BadRequest("O identificador informado difere do identificador do objeto");
         
         db.Atletas.Update(obj);
         db.SaveChanges();
@@ -70,12 +70,12 @@ public class AtletaController : ControllerBase
     public IActionResult Delete(string id)
     {
         if (db.Atletas == null)
-            return NotFound();
+            return NotFound("Nenhum atleta cadastrado.");
 
         var obj = db.Atletas.FirstOrDefault(x => x.Id == id);
 
         if (obj == null)
-            return NotFound();
+            return NotFound("Não foi encontrado nenhum atleta com o identificador informado.");
 
         db.Atletas.Remove(obj);
         db.SaveChanges();

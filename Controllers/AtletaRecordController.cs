@@ -13,16 +13,6 @@ public class AtletaRecordController : ControllerBase
     public AtletaRecordController(ApplicationDbContext db) => 
         this.db = db;
         
-    // GET: api/AtletaRecord
-    [HttpGet]
-    public ActionResult<IEnumerable<AtletaRecord>> Get()
-    {
-        if (db.AtletasRecords == null)
-            return NotFound();
-
-        return db.AtletasRecords;
-    }
-
     // GET: api/AtletaRecord/5
     [HttpGet("{id}")]
     public ActionResult<AtletaRecord> GetId(string id)
@@ -30,7 +20,7 @@ public class AtletaRecordController : ControllerBase
         var obj = db.AtletasRecords.FirstOrDefault(x => x.Id == id);
 
         if (obj == null)
-            return NotFound();
+            return NotFound("Não foi encontrado nenhum record com o identificador informado.");
 
         return obj;
     }
@@ -42,7 +32,7 @@ public class AtletaRecordController : ControllerBase
         var objetos = db.AtletasRecords.Where(x => x.AtletaId == id);
 
         if (objetos == null)
-            return NotFound();
+            return NotFound("Não foi encontrado nenhum record para o atleta informado.");
 
         return objetos.ToArray();
     }
@@ -69,8 +59,8 @@ public class AtletaRecordController : ControllerBase
     public IActionResult Put(string id, AtletaRecord obj)
     {
         if (id != obj.Id)
-            return BadRequest();
-        
+            return BadRequest("O identificador informado difere do identificador do objeto");
+
         db.AtletasRecords.Update(obj);
         db.SaveChanges();
 
@@ -82,12 +72,12 @@ public class AtletaRecordController : ControllerBase
     public IActionResult Delete(string id)
     {
         if (db.AtletasRecords == null)
-            return NotFound();
+            return NotFound("Nenhum record cadastrado.");
 
         var obj = db.AtletasRecords.FirstOrDefault(x => x.Id == id);
 
         if (obj == null)
-            return NotFound();
+            return NotFound("Não foi encontrado nenhum record com o identificador informado.");
 
         db.AtletasRecords.Remove(obj);
         db.SaveChanges();

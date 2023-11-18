@@ -12,13 +12,13 @@ public class TreinadorController : ControllerBase
 {
     public TreinadorController(ApplicationDbContext db) => 
         this.db = db;
-        
+
     // GET: api/Treinador
     [HttpGet]
     public ActionResult<IEnumerable<Treinador>> Get()
     {
         if (db.Treinadores == null)
-            return NotFound();
+            return NotFound("Nenhum treinador cadastrado.");
 
         return db.Treinadores;
     }
@@ -30,7 +30,7 @@ public class TreinadorController : ControllerBase
         var obj = db.Treinadores.FirstOrDefault(x => x.Id == id);
 
         if (obj == null)
-            return NotFound();
+            return NotFound("Não foi encontrado nenhum treinador com o identificador informado.");
 
         return obj;
     }
@@ -57,8 +57,8 @@ public class TreinadorController : ControllerBase
     public IActionResult Put(string id, Treinador obj)
     {
         if (id != obj.Id)
-            return BadRequest();
-        
+            return BadRequest("O identificador informado difere do identificador do objeto");
+
         db.Treinadores.Update(obj);
         db.SaveChanges();
 
@@ -70,12 +70,12 @@ public class TreinadorController : ControllerBase
     public IActionResult Delete(string id)
     {
         if (db.Treinadores == null)
-            return NotFound();
+            return NotFound("Nenhum treinador cadastrado.");
 
         var obj = db.Treinadores.FirstOrDefault(x => x.Id == id);
 
         if (obj == null)
-            return NotFound();
+            return NotFound("Não foi encontrado nenhum treinador com o identificador informado.");
 
         db.Treinadores.Remove(obj);
         db.SaveChanges();
